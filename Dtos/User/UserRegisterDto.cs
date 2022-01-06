@@ -1,4 +1,4 @@
-namespace WebNet.Dtos
+namespace WebNet.Dtos.User
 {
     public class UserRegisterDto
     {

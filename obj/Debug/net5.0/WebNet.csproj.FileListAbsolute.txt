@@ -36,3 +36,10 @@ C:\Users\Admin\WebNet\obj\Debug\net5.0\WebNet.dll
 C:\Users\Admin\WebNet\obj\Debug\net5.0\ref\WebNet.dll
 C:\Users\Admin\WebNet\obj\Debug\net5.0\WebNet.pdb
 C:\Users\Admin\WebNet\obj\Debug\net5.0\WebNet.genruntimeconfig.cache
+C:\Users\Admin\WebNet\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Admin\WebNet\bin\Debug\net5.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Admin\WebNet\bin\Debug\net5.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Admin\WebNet\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Admin\WebNet\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Admin\WebNet\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Admin\WebNet\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll

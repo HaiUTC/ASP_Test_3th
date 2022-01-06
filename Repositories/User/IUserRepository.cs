@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WebNet.Dtos.User;
 using WebNet.Models;
 
 namespace WebNet.Repositories
 {
     public interface IUserRepository
     {
-         Task<User> Get(int id);
+         Task<AuthenticatedUser> Login(UserLoginDto userLogin);
          Task<IEnumerable<User>> GetAll();
-         Task Add(User user);
+         Task<AuthenticatedUser> Register(UserRegisterDto userRegisterDto);
          Task Delete(int id);
          Task Update(User user);
     }

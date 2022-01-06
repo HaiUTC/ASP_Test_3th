@@ -1,15 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using WebNet.Dtos;
+using Utils.Utilities;
+using WebNet.Data;
+using WebNet.Dtos.User;
 using WebNet.Models;
 using WebNet.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Utils.CustomException;
 
 namespace WebNet.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class UsersController: ControllerBase
     {
         private readonly IUserRepository _userRepository;
@@ -17,13 +22,18 @@ namespace WebNet.Controllers
             _userRepository = userRepository;
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser (int id){
-            var user = await _userRepository.Get(id);
-            if(user==null){
-                return NotFound();
+        [HttpPost("login")]
+        public async Task<IActionResult> Login (UserLoginDto userLogin){
+            try
+            {
+                var result = await _userRepository.Login(userLogin);
+                return Created("", result);
             }
-            return Ok(user);
+            catch(InvalidEmailPasswordException e)
+            {
+                return StatusCode(401, e.Message);
+            }
+
         }
 
         [HttpGet]
@@ -32,38 +42,54 @@ namespace WebNet.Controllers
             return Ok(user);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Register(UserRegisterDto userRegisterDto){
-            User user = new(){
-                FirstName = userRegisterDto.FirstName,
-                LastName = userRegisterDto.LastName,
-                Gender = userRegisterDto.Gender,
-                Email = userRegisterDto.Email,
-                Password = userRegisterDto.Password,
-                CreatedAt = DateTime.Now
-            };
-            await _userRepository.Add(user);
-            return Ok();
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] UserRegisterDto userRegisterDto){
+            try
+            {
+                var result = await _userRepository.Register(userRegisterDto);
+                return Created("", result);
+            }
+            catch(EmailAlreadyExistsException e)
+            {
+                return StatusCode(409, e.Message);
+            }
+
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteUser (int id){
-            await _userRepository.Delete(id);
-            return Ok();
+        public async Task<IActionResult> DeleteUser (int id){
+            try
+            {
+                 await _userRepository.Delete(id);
+                 return Created("", null);
+            }
+            catch (NullReferenceException e)
+            {
+               return StatusCode(400, e.Message);
+            }
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateUser (int id, UserUpdateDto userUpdateDto){
-            User user = new(){
-                UserId = id,
-                FirstName = userUpdateDto.FirstName,
-                LastName = userUpdateDto.LastName,
-                Gender = userUpdateDto.Gender,
-                Email = userUpdateDto.Email,
-                Password = userUpdateDto.Password,
-            };
-            await _userRepository.Update(user);
-            return Ok();
+        public async Task<IActionResult> UpdateUser (int id, UserUpdateDto userUpdateDto){
+            try
+            {
+                User user = new(){
+                    UserId = id,
+                    FirstName = userUpdateDto.FirstName,
+                    LastName = userUpdateDto.LastName,
+                    Gender = userUpdateDto.Gender,
+                    Email = userUpdateDto.Email,
+                    Password = userUpdateDto.Password,
+                };
+                await _userRepository.Update(user); 
+                return Created("", null);
+            }
+            catch (NullReferenceException e)
+            {
+                return StatusCode(400, e.Message);
+            }
+            
+            
         }
     }
 }

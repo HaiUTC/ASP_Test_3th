@@ -6,6 +6,5 @@ using WebNet.Models;
 namespace WebNet.Data{
     public interface IDataContext{
         DbSet<User> Users { get; set;}
-        Task<int> SaveChangeAsync(CancellationToken cancellationToken = default);
     }
 }
